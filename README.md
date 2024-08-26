@@ -1,3 +1,24 @@
+# Structure Of Our App
+
+Header
+Body
+    - SideBar
+        - MenuItems
+    - MainContainer
+        - ButtonLists
+        - VideoContainer
+            - VideoCard
+Footer
+
+# Redux
+
+- install redux-toolkit and react-redux
+- create store
+- create slice
+- import slice in store
+- provide to app 
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
