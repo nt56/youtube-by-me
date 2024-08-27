@@ -4,7 +4,9 @@
 /node_modules
 /.pnp
 .pnp.js
-./utils/constants.js
+
+#files
+src/utils/constants.js
 
 # testing
 /coverage
