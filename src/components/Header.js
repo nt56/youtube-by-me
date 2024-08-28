@@ -1,7 +1,48 @@
 import { useDispatch } from "react-redux";
 import { toggelMenu } from "../utils/appSlice";
+import { useEffect, useState } from "react";
+import { YOUTUBE_SEARCH_API } from "../utils/constants";
+import { CiSearch } from "react-icons/ci";
 
 const Header = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const [suggestion, setSuggestion] = useState([]);
+
+  const [showSuggestion, setShowsuggestion] = useState(false);
+
+  //make an api call after every key press if the difference between two api calls is <200ms then decline the api call
+  useEffect(() => {
+    const timer = setTimeout(() => getSearchSuggestions(), 200);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchQuery]);
+
+  //working
+  /**
+   * key - i
+   * - render the componenet
+   * - call useEfect()
+   * - start time => make api call after 200ms
+   *
+   * key - ip(before 200ms)
+   * - destroy the component(call useEffect return() method)
+   * - re-render the componenet
+   * - call useEfect()
+   * - start time => make api call after 200ms (new timer)
+   *
+   * if no key press after 200ms then make an api call
+   */
+
+  const getSearchSuggestions = async () => {
+    const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
+    const json = await data.json();
+    // console.log(json);
+    setSuggestion(json[1]);
+  };
+
   const dispatch = useDispatch();
 
   const toggelMenuHandler = () => {
@@ -24,14 +65,34 @@ const Header = () => {
         />
       </div>
 
-      <div className="col-span-10 pr-40 text-center">
-        <input
-          type="text"
-          className="w-1/2 border border-gray-600 rounded-l-full p-2"
-        />
-        <button className="border border-gray-600 rounded-r-full p-2 px-4 bg-gray-200">
-          Search
-        </button>
+      <div className="col-span-10 pr-40">
+        <div>
+          <input
+            type="text"
+            className="px-5 w-1/2 border border-gray-600 rounded-l-full p-2"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setShowsuggestion(true)}
+            onBlur={() => setShowsuggestion(false)}
+          />
+          <button className="border border-gray-600 rounded-r-full p-2 px-4 bg-gray-200">
+            Search
+          </button>
+        </div>
+        {showSuggestion && (
+          <div className="fixed bg-white py-2 px-3 ml-4 rounded-lg shadow-lg w-[40rem] border border-gray-100">
+            <ul>
+              {suggestion.map((s) => (
+                <li
+                  key={s}
+                  className="py-2 shadow-sm hover:bg-gray-100 flex gap-3 items-center"
+                >
+                  <CiSearch /> {s}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       <div className="col-span-1">
