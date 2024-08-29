@@ -1,8 +1,9 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggelMenu } from "../utils/appSlice";
 import { useEffect, useState } from "react";
 import { YOUTUBE_SEARCH_API } from "../utils/constants";
 import { CiSearch } from "react-icons/ci";
+import { cacheResults } from "../utils/searchSlice";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -11,39 +12,37 @@ const Header = () => {
 
   const [showSuggestion, setShowsuggestion] = useState(false);
 
+  const searchCache = useSelector((store) => store.search);
+
+  const dispatch = useDispatch();
+
   //make an api call after every key press if the difference between two api calls is <200ms then decline the api call
   useEffect(() => {
-    const timer = setTimeout(() => getSearchSuggestions(), 200);
+    const timer = setTimeout(() => {
+      if (searchCache[searchQuery]) {
+        setSuggestion(searchCache[searchQuery]);
+      } else {
+        getSearchSuggestions();
+      }
+    }, 200);
 
     return () => {
       clearTimeout(timer);
     };
   }, [searchQuery]);
 
-  //working
-  /**
-   * key - i
-   * - render the componenet
-   * - call useEfect()
-   * - start time => make api call after 200ms
-   *
-   * key - ip(before 200ms)
-   * - destroy the component(call useEffect return() method)
-   * - re-render the componenet
-   * - call useEfect()
-   * - start time => make api call after 200ms (new timer)
-   *
-   * if no key press after 200ms then make an api call
-   */
-
   const getSearchSuggestions = async () => {
     const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
     const json = await data.json();
-    // console.log(json);
     setSuggestion(json[1]);
-  };
 
-  const dispatch = useDispatch();
+    //update cache results
+    dispatch(
+      cacheResults({
+        [searchQuery]: json[1],
+      })
+    );
+  };
 
   const toggelMenuHandler = () => {
     dispatch(toggelMenu());
