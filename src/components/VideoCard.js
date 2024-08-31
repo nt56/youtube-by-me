@@ -1,20 +1,26 @@
 import React from "react";
+import { RxDotFilled } from "react-icons/rx";
 
 const VideoCard = ({ info }) => {
   const { snippet, statistics } = info;
 
   const { channelTitle, title, thumbnails } = snippet;
 
-  const { likeCount, viewCount } = statistics;
+  const { viewCount } = statistics;
 
   return (
-    <div className="p-3 w-72 shadow-lg rounded-lg h-[400px]">
-      <img className="rounded-lg" src={thumbnails.medium.url} alt="thumbnail" />
-      <ul>
-        <li className="font-bold py-2">{title}</li>
-        <li>channel - {channelTitle}</li>
-        <li>likes - {likeCount}</li>
-        <li>views - {viewCount}</li>
+    <div className="p-3 w-72 hover:shadow-lg rounded-lg flex flex-col">
+      <img
+        className="rounded-xl w-full"
+        src={thumbnails.medium.url}
+        alt="thumbnail"
+      />
+      <h4 className="font-extrabold py-3">{title}</h4>
+      <ul className=" items-center font-gray-400 text-lg ">
+        <li className="flex items-center font-bold text-gray-600">
+          {channelTitle} <RxDotFilled />
+        </li>
+        <li className="flex items-center gap-2">{viewCount} views</li>
       </ul>
     </div>
   );

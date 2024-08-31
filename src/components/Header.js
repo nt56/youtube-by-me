@@ -7,9 +7,7 @@ import { cacheResults } from "../utils/searchSlice";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
-
   const [suggestion, setSuggestion] = useState([]);
-
   const [showSuggestion, setShowsuggestion] = useState(false);
 
   const searchCache = useSelector((store) => store.search);
@@ -49,8 +47,8 @@ const Header = () => {
   };
 
   return (
-    <div className="grid grid-flow-col p-4 shadow-lg items-center">
-      <div className="flex col-span-1 gap-5 cursor-pointer">
+    <div className="flex justify-between shadow-lg items-center p-3">
+      <div className="pl-5 flex gap-5 cursor-pointer">
         <img
           onClick={() => toggelMenuHandler()}
           className="h-10"
@@ -64,7 +62,7 @@ const Header = () => {
         />
       </div>
 
-      <div className="col-span-10 pr-40">
+      <div className="w-1/2">
         <div>
           <input
             type="text"
@@ -79,7 +77,7 @@ const Header = () => {
           </button>
         </div>
         {showSuggestion && (
-          <div className="fixed bg-white py-2 px-3 ml-4 rounded-lg shadow-lg w-[40rem] border border-gray-100">
+          <div className="fixed bg-white py-2 px-3 ml-4 rounded-lg shadow-lg w-[33rem] border border-gray-100">
             <ul>
               {suggestion.map((s) => (
                 <li
@@ -94,7 +92,7 @@ const Header = () => {
         )}
       </div>
 
-      <div className="col-span-1">
+      <div className="pr-10">
         <img
           className="h-10"
           alt="user-icon-img"

@@ -163,14 +163,12 @@ const CommentList = ({ comments }) => {
       {/* Desclaimer : Please use key as a index */}
       {comments.map((comment, index) => {
         return (
-          <>
-            <div className="p-2" key={index}>
-              <Comment key={index} data={comment} />
-              <div className="pl-5 ml-5">
-                <CommentList comments={comment.reply} />
-              </div>
+          <div className="p-2" key={index}>
+            <Comment key={index} data={comment} />
+            <div className="pl-5 ml-5">
+              <CommentList key={index} comments={comment.reply} />
             </div>
-          </>
+          </div>
         );
       })}
     </>
@@ -179,7 +177,7 @@ const CommentList = ({ comments }) => {
 
 const CommentsContainer = () => {
   return (
-    <div className="p-1 m-1 w-2/3">
+    <div className="m-5 p-2 w-[1200px] shadow-lg bg-slate-100 rounded-lg overflow-y-scroll h-[100vh]">
       <CommentList comments={actualComment} />
     </div>
   );
