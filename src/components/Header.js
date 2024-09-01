@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { toggelMenu } from "../utils/appSlice";
 import { useEffect, useState } from "react";
-import { YOUTUBE_SEARCH_API } from "../utils/constants";
+import { YOUTUBE_SEARCH_API, YOUTUBE_VIDEOS_API } from "../utils/constants";
 import { CiSearch } from "react-icons/ci";
 import { cacheResults } from "../utils/searchSlice";
 
@@ -11,7 +11,6 @@ const Header = () => {
   const [showSuggestion, setShowsuggestion] = useState(false);
 
   const searchCache = useSelector((store) => store.search);
-
   const dispatch = useDispatch();
 
   //make an api call after every key press if the difference between two api calls is <200ms then decline the api call
@@ -68,7 +67,9 @@ const Header = () => {
             type="text"
             className="px-5 w-1/2 border border-gray-600 rounded-l-full p-2"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+            }}
             onFocus={() => setShowsuggestion(true)}
             onBlur={() => setShowsuggestion(false)}
           />
@@ -82,7 +83,7 @@ const Header = () => {
               {suggestion.map((s) => (
                 <li
                   key={s}
-                  className="py-2 shadow-sm hover:bg-gray-100 flex gap-3 items-center"
+                  className="py-2 shadow-sm hover:bg-gray-100 flex gap-3 items-center cursor-pointer"
                 >
                   <CiSearch /> {s}
                 </li>
