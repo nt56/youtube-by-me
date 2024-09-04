@@ -6,7 +6,7 @@
 .pnp.js
 
 #files
-src/utils/constants.js
+.env
 
 # testing
 /coverage
